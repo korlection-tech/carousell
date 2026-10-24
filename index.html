@@ -7,30 +7,70 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1100px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
         .header-section { text-align: center; margin-bottom: 25px; }
-        .company-logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .company-logo { 
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; 
+            border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
         h1 { color: #1a1a1a; margin: 0 0 8px 0; font-size: 28px; font-weight: 700; }
         .subtitle { color: #4a5568; margin: 0 0 6px 0; font-size: 15px; font-weight: 600; }
         .notice-text { color: #e53e3e; font-size: 13px; margin: 0; font-weight: 500; }
+        
         .status-message { text-align: center; padding: 12px; margin-bottom: 20px; border-radius: 6px; font-size: 14px; font-weight: bold; }
         .status-loading { background: #fff3cd; color: #856404; }
         .status-error { background: #f8d7da; color: #721c24; }
-        .search-box { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 30px; }
+
+        .search-box {
+            background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 30px;
+        }
         label { font-weight: 600; display: block; margin-bottom: 10px; color: #2c3e50; font-size: 16px; }
-        textarea { width: 100%; height: 90px; padding: 12px; border: 2px solid #ced4da; border-radius: 6px; font-size: 16px; resize: vertical; box-sizing: border-box; font-family: inherit; }
+        textarea {
+            width: 100%; height: 90px; padding: 12px; border: 2px solid #ced4da;
+            border-radius: 6px; font-size: 16px; resize: vertical; box-sizing: border-box; font-family: inherit;
+        }
         textarea:focus { border-color: #001f3f; outline: none; }
         .hint { font-size: 13px; color: #6c757d; margin-top: 8px; display: flex; justify-content: space-between; }
+        
         .btn-group { display: flex; gap: 15px; margin-top: 15px; }
-        .btn-search { flex: 2; padding: 14px; background-color: #001f3f; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn-search {
+            flex: 2; padding: 14px; background-color: #001f3f; color: white;
+            border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+        }
         .btn-search:hover { background-color: #001124; }
         .btn-search:disabled { background-color: #a0aec0; cursor: not-allowed; }
-        .btn-ig-gen { display: none; flex: 1; padding: 14px; background-color: #e1306c; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; align-items: center; justify-content: center; gap: 6px; }
+
+        /* 🔒 隱藏按鈕預設隱藏 (display: none) */
+        .btn-ig-gen {
+            display: none; 
+            flex: 1; padding: 14px; background-color: #e1306c; color: white;
+            border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+            align-items: center; justify-content: center; gap: 6px;
+        }
         .btn-ig-gen:hover { background-color: #c12056; }
+
+        /* Grid 與卡片 */
         .results-count { margin-bottom: 15px; font-weight: bold; color: #2c3e50; font-size: 16px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .card { background: #fff; border: 1px solid #e1e8ed; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; padding: 15px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .card {
+            background: #fff; border: 1px solid #e1e8ed; border-radius: 8px; overflow: hidden;
+            display: flex; flex-direction: column; padding: 15px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+        }
         .card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
         .image-container { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
         .card img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -39,15 +79,23 @@
         .price-wrapper { margin-top: auto; border-top: 1px dashed #edf2f7; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; }
         .price-label { font-size: 12px; color: #718096; }
         .price { font-size: 15px; color: #e53e3e; font-weight: bold; text-align: right; line-height: 1.3; }
-        .oy-price-line { font-size: 11px; color: #718096; margin-top: 6px; line-height: 1.4; }
         .no-result { text-align: center; color: #a0aec0; grid-column: 1 / -1; padding: 50px; font-size: 16px; }
         .click-tip { font-size: 11px; color: #3498db; text-align: right; margin-top: 2px; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+
+        /* Modal 彈出視窗 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-wrapper { position: relative; width: 90%; max-width: 550px; max-height: 85vh; display: flex; flex-direction: column; }
-        .modal-content { background: #fff; width: 100%; height: 100%; border-radius: 12px; padding: 25px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: scale(0.8); transition: transform 0.3s ease; box-sizing: border-box; }
+        .modal-content {
+            background: #fff; width: 100%; height: 100%; border-radius: 12px; padding: 25px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: scale(0.8); transition: transform 0.3s ease; box-sizing: border-box;
+        }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 30px; color: #666; cursor: pointer; border: none; background: rgba(255, 255, 255, 0.85); font-weight: bold; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10000; transition: background 0.2s, color 0.2s; }
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; font-size: 30px; color: #666; cursor: pointer; border: none; background: rgba(255, 255, 255, 0.85); font-weight: bold; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10000; transition: background 0.2s, color 0.2s;
+        }
         .close-btn:hover { color: #000; background: #fff; }
         .modal-detail-img { width: 100%; height: auto; background: #fafafa; margin-bottom: 15px; border-radius: 6px; display: block; }
         .thumb-container { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
@@ -58,14 +106,48 @@
         .modal-price-box { background: #fff5f5; padding: 12px 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
         .modal-price-label { font-size: 14px; color: #c53030; font-weight: 600; }
         .modal-price { font-size: 20px; color: #e53e3e; font-weight: bold; text-align: right; line-height: 1.3; }
-        #renderCanvasHidden { position: absolute; left: -9999px; top: -9999px; width: 1080px; height: 1080px; background: #ffffff; }
-        .ig-poster-1080 { width: 1080px; height: 1080px; background: #ffffff; position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; box-sizing: border-box; }
+
+        /* 📸 隱藏繪圖渲染區 (1080x1080 IG 格式) */
+        #renderCanvasHidden {
+            position: absolute; left: -9999px; top: -9999px; width: 1080px; height: 1080px; background: #ffffff;
+        }
+        .ig-poster-1080 {
+            width: 1080px; height: 1080px; background: #ffffff; position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; box-sizing: border-box;
+        }
         .ig-grid-item { position: relative; width: 100%; height: 100%; overflow: hidden; background: #ffffff; border: 1px solid #f0f0f0; box-sizing: border-box; }
         .ig-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .ig-tag-title { position: absolute; top: 20px; left: 20px; right: 20px; background-color: #ffffff !important; color: #000000 !important; padding: 8px 12px; border-radius: 6px; font-size: 24px; font-weight: bold; line-height: 1.25; box-shadow: none !important; border: none !important; word-wrap: break-word; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .ig-tag-price { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); background-color: #ffffff !important; color: #000000 !important; padding: 6px 20px; border-radius: 8px; font-size: 38px; font-weight: 900; box-shadow: none !important; border: none !important; text-align: center; white-space: nowrap; line-height: 1.2; }
-        .ig-center-brand { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #f19da9 !important; color: #ffffff !important; font-size: 36px; font-weight: 900; padding: 12px 36px; border-radius: 20px; text-transform: uppercase; letter-spacing: 2px; z-index: 10; box-shadow: none !important; border: none !important; }
-    </style>
+        
+        /* 1. 產品名稱排版：純白底色 + 黑色字體 (完全移除陰影以防變灰色) */
+        .ig-tag-title {
+            position: absolute; top: 20px; left: 20px; right: 20px;
+            background-color: #ffffff !important; color: #000000 !important;
+            padding: 8px 12px; border-radius: 6px;
+            font-size: 24px; font-weight: bold; line-height: 1.25;
+            box-shadow: none !important; border: none !important;
+            word-wrap: break-word; word-break: break-word;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        
+        /* 2. 價錢：正下方中間 + 純白底色 + 黑色大字體 (完全移除陰影) */
+        .ig-tag-price {
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            background-color: #ffffff !important; color: #000000 !important;
+            padding: 6px 20px; border-radius: 8px;
+            font-size: 38px; font-weight: 900;
+            box-shadow: none !important; border: none !important;
+            text-align: center; white-space: nowrap; line-height: 1.2;
+        }
+
+        /* 3. 中間品牌名：單一粉紅色背景 */
+        .ig-center-brand {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: #f19da9 !important; color: #ffffff !important;
+            font-size: 36px; font-weight: 900;
+            padding: 12px 36px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 2px; z-index: 10;
+            box-shadow: none !important; border: none !important;
+        }
+    .category-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}.category-filters button{border:1px solid #ccd4df;background:#fff;border-radius:20px;padding:9px 16px;cursor:pointer}.category-filters button.active{background:#001f3f;color:white}.modal-brand{font-size:22px}.modal-title{font-size:18px}.brand-badge{font-size:16px}.product-name{font-size:14px}.price-meta{font-size:11px;color:#718096;margin-top:8px}</style>
 </head>
 <body>
 
@@ -74,10 +156,10 @@
         <img src="logo.png" id="logoImg" alt="Company Logo" class="company-logo" onerror="this.style.display='none'">
         <h1>韓國 Olive Young 代購</h1>
         <div class="subtitle">每次最多可同時查詢 10 個品牌</div>
-        <p class="notice-text">*價格根據 Olive Young 韓國官網實際付款價、HK$1 = ₩155 匯率、20% margin 及運費自動計算，可能因促銷優惠而變動，請於落單前與店主確認。</p>
+        <p class="notice-text">*價格可能因促銷優惠而變動，請於落單前與店主確認。</p>
     </div>
-
-    <div id="statusMessage" class="status-message status-loading">⏳ 正在連線讀取產品資料庫及 Olive Young 韓國官網價格，請稍候...</div>
+    
+    <div id="statusMessage" class="status-message status-loading">⏳ 正在連線讀取免稅店產品資料庫，請稍候...</div>
 
     <div class="search-box">
         <label for="searchInput">請輸入查詢關鍵字（多個請用「空格」或「換行」隔開）：</label>
@@ -88,14 +170,17 @@
         </div>
         <div class="btn-group">
             <button class="btn-search" id="searchBtn" onclick="performSearch()" disabled>請稍候...</button>
+            <!-- 隱藏的按鈕 -->
             <button class="btn-ig-gen" id="igGenBtn" onclick="generateAllIGPosters()">📸 一鍵生成 IG 宣傳圖</button>
         </div>
     </div>
 
-    <div class="results-count" id="resultsCount"></div>
+    <div id="categoryFilters" class="category-filters"></div>
+<div class="results-count" id="resultsCount"></div>
     <div class="grid" id="resultsGrid"></div>
 </div>
 
+<!-- Modal 彈出視窗 -->
 <div class="modal-overlay" id="detailModal" onclick="closeModal(event)">
     <div class="modal-wrapper" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="closeModal(event, true)">&times;</button>
@@ -105,13 +190,14 @@
             <div id="modalBrand" class="modal-brand">BRAND</div>
             <h2 id="modalTitle" class="modal-title">產品名稱項目</h2>
             <div class="modal-price-box">
-                <span class="modal-price-label">Olive Young 韓國官網價／代購價</span>
-                <span class="modal-price" id="modalPrice">待更新</span>
+                <span class="modal-price-label">價格以落單時確認為準</span>
+                <span class="modal-price" id="modalPrice">HKD $0</span>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 隱藏截圖畫布容器 -->
 <div id="renderCanvasHidden">
     <div class="ig-poster-1080" id="igPostTemplate">
         <div class="ig-center-brand" id="igBrandTag">BRAND</div>
@@ -123,299 +209,56 @@
 </div>
 
 <script>
-let productsData = [];
-let oliveYoungPrices = {};
-
-// ===== 你嘅定價公式設定 =====
-// 售價 = Olive Young 實際付款價 ÷ 155 × 1.2 + 運費
-// STANDARD = 400ml 或以下，化妝品及護膚品，運費 HK$18
-// LARGE = 超過 400ml，例如 body lotion、shampoo，運費 HK$35
-const KRW_PER_HKD = 155;
-const MARGIN_RATE = 1.2;
-const STANDARD_SHIPPING_HKD = 18;
-const LARGE_SHIPPING_HKD = 35;
-
-document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.shiftKey && (event.key === 'G' || event.key === 'g')) {
-        event.preventDefault();
-        const btn = document.getElementById("igGenBtn");
-        btn.style.display = "flex";
-        alert("🔓 管理員模式已開啟！「一鍵生成 IG 宣傳圖」按鈕已顯示。");
-    }
-});
-
-function formatPriceText(priceRaw) {
-    if (!priceRaw) return "未定價";
-    return String(priceRaw).replace(/\n/g, "<br>");
+let productsData=[], oliveYoungPrices={}, activeCategory='全部';
+const CATEGORIES=['全部','Skincare','Cosmetics','Body Care','Haircare','Supplement','Others'];
+const KRW_PER_HKD=155, MARKUP_MULTIPLIER=1.2;
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function positive(v){const n=Number(v);return Number.isFinite(n)&&n>0?n:0;}
+function goodsNo(item){try{return new URL(item['Olive Young URL']).searchParams.get('goodsNo')||'';}catch{return '';}}
+function record(item){return oliveYoungPrices[goodsNo(item)]||{};}
+function manual(item){return positive(item['Manual Price HKD']);}
+function getShippingFee(item){return String(item['Shipping Type']||'').trim().toUpperCase()==='LARGE'?35:18;}
+function calcDaigouPrice(item){if(manual(item))return Math.ceil(manual(item));const r=record(item);if(r.price_status&&r.price_status!=='OK')return 0;const krw=positive(r.kr_payment_price_krw);return krw?Math.ceil(krw/KRW_PER_HKD*MARKUP_MULTIPLIER+getShippingFee(item)):0;}
+function priceText(item){const n=calcDaigouPrice(item);return n?'HK$'+n.toLocaleString('en-HK'):'價格待確認';}
+function period(item){const r=record(item);return r.promotion_start&&r.promotion_end?r.promotion_start+' 至 '+r.promotion_end:'價格以落單時確認為準';}
+function category(item){const v=String(item.Category||'').trim();return CATEGORIES.slice(1).find(c=>c.toLowerCase()===v.toLowerCase())||'Others';}
+function parseKeywords(text){return text.trim().split(/[\n,，\s]+/).filter(Boolean);}
+function status(text,error=false){const el=document.getElementById('statusMessage');el.style.display=text?'block':'none';el.className='status-message '+(error?'status-error':'status-loading');el.textContent=text;}
+function drawFilters(){const el=document.getElementById('categoryFilters');el.innerHTML='';CATEGORIES.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.className=c===activeCategory?'active':'';b.onclick=()=>{activeCategory=c;drawFilters();performSearch();};el.appendChild(b);});}
+async function loadData(){
+ try{
+  if(!window.Papa)throw Error('CSV 讀取工具載入失敗，請檢查網絡後重新整理。');
+  let rows=null;
+  for(const name of ['pricelist.csv','Duty Free Pricelist.csv','Duty Free Pricelist.csv.csv']){
+   const response=await fetch(encodeURI(name)+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)continue;
+   const parsed=Papa.parse(await response.text(),{header:true,skipEmptyLines:'greedy',transformHeader:s=>s.replace(/^\uFEFF/,'').trim(),transform:s=>s.trim()});
+   if(!parsed.meta.fields?.includes('Brand')||!parsed.meta.fields?.includes('Product Name'))continue;
+   rows=parsed.data.filter(r=>r['Product Name']);break;
+  }
+  if(!rows)throw Error('找不到有效 pricelist.csv，請確認 Brand、Product Name 欄名。');
+  productsData=rows;
+  try{const response=await fetch('oliveyoung_prices.json?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();oliveYoungPrices=data.products||{};}catch{oliveYoungPrices={};}
+  const missing=rows.filter(r=>!calcDaigouPrice(r)).length;
+  status(missing?`已載入 ${rows.length} 件商品；其中 ${missing} 件未有有效售價。自動抓價尚需另外設定，手動價可照常使用。`:'',!!missing);
+  document.getElementById('searchBtn').disabled=false;document.getElementById('searchBtn').textContent='立即查詢價格';drawFilters();performSearch();
+ }catch(e){status(e.message,true);}
 }
-
-function formatKrw(value) {
-    if (!value) return "—";
-    return "₩" + Number(value).toLocaleString();
+function performSearch(){let keys=parseKeywords(document.getElementById('searchInput').value);if(keys.length>10){alert('每次最多 10 個關鍵字，將使用前 10 個。');keys=keys.slice(0,10);}
+ let filtered=productsData.filter(p=>(activeCategory==='全部'||category(p)===activeCategory)&&(!keys.length||keys.some(k=>((p.Brand||'')+' '+(p['Product Name']||'')).toLowerCase().includes(k.toLowerCase()))));
+ let heading='商品';if(!keys.length&&activeCategory==='全部'){const featured=filtered.filter(p=>['TRUE','YES','1'].includes(String(p.Featured||'').toUpperCase()));if(featured.length){filtered=featured;heading='精選商品';}}
+ document.getElementById('resultsCount').textContent=`${heading}：${filtered.length} 件`;
+ const grid=document.getElementById('resultsGrid');grid.innerHTML='';
+ if(!filtered.length){grid.innerHTML='<div class="no-result">沒有找到相符的商品。</div>';return;}
+ filtered.forEach(item=>{const card=document.createElement('div');card.className='card';card.onclick=()=>openModal(item);card.innerHTML=`<div class="image-container"><img src="${esc(item.Image||'')}" alt="${esc(item['Product Name'])}" onerror="this.onerror=null;this.src='https://placehold.co/200x200?text=No+Image'"></div><div class="brand-badge">${esc(item.Brand||'Unknown')}</div><div class="product-name" title="${esc(item['Product Name'])}">${esc(item['Product Name'])}</div><div class="price-wrapper"><span class="price-label">${esc(period(item))}</span><span class="price">${priceText(item)}</span></div><div class="click-tip">🔍 點擊看細節</div>`;grid.appendChild(card);});
 }
-
-function formatHkd(value) {
-    if (!value) return "待更新";
-    return "HK$" + Number(value).toLocaleString();
-}
-
-function getGoodsNo(url) {
-    if (!url) return "";
-    const match = String(url).match(/goodsNo=([^&]+)/i);
-    return match ? match[1] : "";
-}
-
-function getOliveYoungData(item) {
-    const goodsNo = getGoodsNo(item["Olive Young URL"]);
-    return oliveYoungPrices[goodsNo] || null;
-}
-
-function getKrwPrice(item) {
-    const oy = getOliveYoungData(item);
-    if (!oy) return 0;
-
-    // kr_sale_price_krw 必須係 Olive Young 實際付款價
-    if (oy.kr_sale_price_krw && Number(oy.kr_sale_price_krw) > 0) {
-        return Number(oy.kr_sale_price_krw);
-    }
-
-    return Number(oy.kr_original_price_krw || 0);
-}
-
-function getShippingType(item) {
-    const value = String(item["Shipping Type"] || "").trim().toUpperCase();
-    return value === "LARGE" ? "LARGE" : "STANDARD";
-}
-
-function getShippingFee(item) {
-    return getShippingType(item) === "LARGE" ? LARGE_SHIPPING_HKD : STANDARD_SHIPPING_HKD;
-}
-
-function calcDaigouPrice(item) {
-    const krw = getKrwPrice(item);
-    if (!krw) return 0;
-
-    const shipping = getShippingFee(item);
-    const rawPrice = krw / KRW_PER_HKD * MARGIN_RATE + shipping;
-
-    // 售價取整（向上取整）
-    return Math.ceil(rawPrice);
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const cacheBuster = "?v=" + new Date().getTime();
-    const possibleNames = [
-        "pricelist.csv" + cacheBuster,
-        "Duty Free Pricelist.csv" + cacheBuster,
-        "Duty%20Free%20Pricelist.csv" + cacheBuster,
-        "Duty Free Pricelist.csv.csv" + cacheBuster
-    ];
-    let attemptIndex = 0;
-
-    function finishLoading() {
-        document.getElementById("statusMessage").style.display = "none";
-        const searchBtn = document.getElementById("searchBtn");
-        searchBtn.disabled = false;
-        searchBtn.innerText = "立即查詢價格";
-    }
-
-    function loadOliveYoungPrices() {
-        fetch("oliveyoung_prices.json" + cacheBuster)
-            .then(response => {
-                if (!response.ok) throw new Error("Price file not found");
-                return response.json();
-            })
-            .then(data => {
-                oliveYoungPrices = data.products || data || {};
-                finishLoading();
-            })
-            .catch(() => {
-                finishLoading();
-            });
-    }
-
-    function tryLoadCSV() {
-        if (attemptIndex >= possibleNames.length) {
-            const statusDiv = document.getElementById("statusMessage");
-            statusDiv.className = "status-message status-error";
-            statusDiv.innerText = "❌ 錯誤：找不到 pricelist.csv。請確認 CSV 與 index.html 放喺 GitHub repo 同一個根目錄。";
-            return;
-        }
-
-        Papa.parse(possibleNames[attemptIndex], {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            trimHeaders: true,
-            transform: function(value) { return value.trim(); },
-            complete: function(results) {
-                productsData = results.data;
-                loadOliveYoungPrices();
-            },
-            error: function() {
-                attemptIndex++;
-                tryLoadCSV();
-            }
-        });
-    }
-
-    tryLoadCSV();
-});
-
-document.getElementById('searchInput').addEventListener('input', function() {
-    let keywords = parseKeywords(this.value);
-    let hint = document.getElementById('brandCountHint');
-    hint.innerText = `已輸入: ${keywords.length} 個關鍵字 / 上限 10 個`;
-    hint.style.color = keywords.length > 10 ? '#e53e3e' : '#6c757d';
-});
-
-function parseKeywords(text) {
-    if (!text.trim()) return [];
-    return text.split(/[\n,，\s]+/).filter(k => k.trim() !== "");
-}
-
-function performSearch() {
-    const rawInput = document.getElementById('searchInput').value;
-    let keywords = parseKeywords(rawInput);
-    if (keywords.length === 0) { alert("請至少輸入一個品牌或關鍵字。"); return; }
-    if (keywords.length > 10) {
-        alert("⚠️ 每次最多只能同時查詢 10 個品牌！\n系統將自動抓取前 10 個。");
-        keywords = keywords.slice(0, 10);
-    }
-
-    const grid = document.getElementById('resultsGrid');
-    const countDiv = document.getElementById('resultsCount');
-    grid.innerHTML = '';
-
-    const filtered = productsData.filter(product => {
-        return keywords.some(keyword => {
-            const k = keyword.toLowerCase().trim();
-            const brandMatch = product["Brand"] ? product["Brand"].toLowerCase().includes(k) : false;
-            const nameMatch = product["Product Name"] ? product["Product Name"].toLowerCase().includes(k) : false;
-            return brandMatch || nameMatch;
-        });
-    });
-
-    countDiv.innerText = `🔍 找到 ${filtered.length} 筆相關商品 (基於 ${keywords.length} 個關鍵字：${keywords.join(', ')})`;
-
-    if (filtered.length === 0) {
-        grid.innerHTML = '<div class="no-result">沒有找到相符的商品，請檢查拼字或更換關鍵字。</div>';
-        return;
-    }
-
-    filtered.forEach((item) => {
-        const brand = item["Brand"] || "Unknown";
-        const name = item["Product Name"] || "無品名";
-        const imgUrl = item["Image"] || "";
-        const detailImgUrl = item["Detail Image"] && item["Detail Image"].trim() !== "" ? item["Detail Image"] : imgUrl;
-
-        const oy = getOliveYoungData(item);
-        const originalKrw = oy ? oy.kr_original_price_krw : 0;
-        const saleKrw = oy ? oy.kr_sale_price_krw : 0;
-        const discount = oy ? oy.discount_rate : 0;
-        const updated = oy ? oy.price_updated_at : "";
-        const hkdPrice = calcDaigouPrice(item);
-        const shipping = getShippingFee(item);
-        const shippingLabel = getShippingType(item) === "LARGE" ? "大型產品運費 HK$35" : "標準運費 HK$18";
-
-        const krwText = saleKrw
-            ? `${formatKrw(originalKrw)} → <strong>${formatKrw(saleKrw)}</strong>`
-            : formatKrw(originalKrw);
-
-        const discountText = discount ? ` <span style="color:#e53e3e;">-${discount}%</span>` : "";
-        const updatedText = updated
-            ? `韓國官網價更新：${new Date(updated).toLocaleString("zh-HK")}`
-            : "韓國官網價待更新";
-
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => openModal(item);
-
-        card.innerHTML = `
-            <div class="image-container">
-                <img src="${imgUrl}" alt="${name}" onerror="this.src='https://placehold.co/200x200?text=No+Image'">
-            </div>
-            <div class="brand-badge">${brand}</div>
-            <div class="product-name" title="${name}">${name}</div>
-            <div class="price-wrapper">
-                <span class="price-label">代購價</span>
-                <span class="price">${formatHkd(hkdPrice)}</span>
-            </div>
-            <div class="oy-price-line">
-                Olive Young：${krwText}${discountText}<br>
-                ${shippingLabel}<br>
-                ${updatedText}
-            </div>
-            <div class="click-tip">🔍 點擊看細節</div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function openModal(item) {
-    const brand = item["Brand"] || "Unknown";
-    const name = item["Product Name"] || "無品名";
-    const detailImgRaw = item["Detail Image"] && item["Detail Image"].trim() !== ""
-        ? item["Detail Image"]
-        : (item["Image"] || "");
-
-    const mainImg = document.getElementById('modalImg');
-    const thumbContainer = document.getElementById('thumbContainer');
-    thumbContainer.innerHTML = '';
-
-    const imgList = detailImgRaw.split(';').join(',').split(',').map(url => url.trim()).filter(url => url !== "");
-    mainImg.src = imgList[0] || "https://placehold.co/400x400?text=No+Detail+Image";
-
-    if (imgList.length > 1) {
-        thumbContainer.style.display = 'flex';
-        imgList.forEach((url, idx) => {
-            const thumb = document.createElement('img');
-            thumb.className = 'thumb-img' + (idx === 0 ? ' active' : '');
-            thumb.src = url;
-            thumb.onclick = function() {
-                mainImg.src = url;
-                document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
-                thumb.classList.add('active');
-            };
-            thumbContainer.appendChild(thumb);
-        });
-    } else {
-        thumbContainer.style.display = 'none';
-    }
-
-    const oy = getOliveYoungData(item);
-    const originalKrw = oy ? oy.kr_original_price_krw : 0;
-    const saleKrw = oy ? oy.kr_sale_price_krw : 0;
-    const discount = oy ? oy.discount_rate : 0;
-    const hkdPrice = calcDaigouPrice(item);
-    const shipping = getShippingFee(item);
-
-    document.getElementById('modalBrand').innerText = brand;
-    document.getElementById('modalTitle').innerText = name;
-
-    const krwLine = saleKrw
-        ? `${formatKrw(originalKrw)} → ${formatKrw(saleKrw)}${discount ? ` (-${discount}%)` : ""}`
-        : formatKrw(originalKrw);
-
-    document.getElementById('modalPrice').innerHTML = `
-        <div style="font-size:13px;color:#4a5568;">Olive Young 韓國官網：${krwLine}</div>
-        <div style="font-size:13px;color:#4a5568;">運費：HK$${shipping}</div>
-        <div style="font-size:20px;color:#e53e3e;font-weight:bold;margin-top:4px;">${formatHkd(hkdPrice)}</div>
-    `;
-
-    document.getElementById('detailModal').classList.add('active');
-    document.querySelector('.modal-content').scrollTop = 0;
-}
-
-function closeModal(event, force = false) {
-    if (force || event.target.id === 'detailModal') {
-        document.getElementById('detailModal').classList.remove('active');
-    }
-}
-
+function openModal(item){const main=document.getElementById('modalImg'), thumbs=document.getElementById('thumbContainer');thumbs.innerHTML='';const imgs=String(item['Detail Image']||item.Image||'').split(/[;,]/).map(s=>s.trim()).filter(Boolean);main.src=imgs[0]||'https://placehold.co/400x400?text=No+Detail+Image';thumbs.style.display=imgs.length>1?'flex':'none';imgs.forEach((url,i)=>{const thumb=document.createElement('img');thumb.src=url;thumb.className='thumb-img'+(i===0?' active':'');thumb.onclick=()=>{main.src=url;thumbs.querySelectorAll('img').forEach(t=>t.classList.remove('active'));thumb.classList.add('active');};thumbs.appendChild(thumb);});document.getElementById('modalBrand').textContent=item.Brand||'Unknown';document.getElementById('modalTitle').textContent=item['Product Name']||'';document.querySelector('.modal-price-label').textContent=period(item);document.getElementById('modalPrice').textContent=priceText(item);document.getElementById('detailModal').classList.add('active');document.querySelector('.modal-content').scrollTop=0;}
+function closeModal(event,force=false){if(force||event.target.id==='detailModal')document.getElementById('detailModal').classList.remove('active');}
+document.addEventListener('keydown',event=>{if(event.ctrlKey&&event.shiftKey&&event.key.toLowerCase()==='g'){event.preventDefault();document.getElementById('igGenBtn').style.display='flex';alert('IG 圖片按鈕已顯示。此快捷鍵不是安全登入功能。');}});
+document.getElementById('searchInput').addEventListener('input',function(){const n=parseKeywords(this.value).length;document.getElementById('brandCountHint').textContent=`已輸入: ${n} 個關鍵字 / 上限 10 個`;document.getElementById('brandCountHint').style.color=n>10?'#e53e3e':'#6c757d';});
+document.addEventListener('DOMContentLoaded',loadData);
 async function generateAllIGPosters() {
     if (productsData.length === 0) { alert("資料庫未載入完成，請稍候再試。"); return; }
-
+    
     const brandMap = {};
     productsData.forEach(p => {
         const b = p["Brand"] ? p["Brand"].trim() : "";
@@ -432,39 +275,45 @@ async function generateAllIGPosters() {
         for (let i = 0; i < items.length; i += 4) {
             const chunk = items.slice(i, i + 4);
             const pageNum = Math.floor(i / 4) + 1;
-
+            
             document.getElementById("igBrandTag").innerText = brandName;
             for (let c = 0; c < 4; c++) {
                 const cell = document.getElementById("igCell" + c);
                 cell.innerHTML = "";
                 if (chunk[c]) {
                     const item = chunk[c];
-                    const hkdPrice = calcDaigouPrice(item);
-                    const titleStr = item['Product Name'] || '';
-
-                    const formattedPrice = formatHkd(hkdPrice);
+                    let rawPrice = priceText(item);
+                    let titleStr = item['Product Name'] || '';
+                    
+                    let formattedPrice = String(rawPrice).trim();
+                    if (!formattedPrice.includes('$') && !isNaN(parseFloat(formattedPrice))) {
+                        formattedPrice = '$' + formattedPrice;
+                    }
 
                     let fontSize = '24px';
-                    if (titleStr.length > 60) fontSize = '18px';
-                    else if (titleStr.length > 40) fontSize = '20px';
+                    if (titleStr.length > 60) {
+                        fontSize = '18px';
+                    } else if (titleStr.length > 40) {
+                        fontSize = '20px';
+                    }
 
                     cell.innerHTML = `
-                        <img src="${item['Image'] || ''}" crossorigin="anonymous" onerror="this.src='https://placehold.co/500x500?text=No+Image'">
-                        <div class="ig-tag-title" style="font-size: ${fontSize};">${titleStr}</div>
+                        <img src="${esc(item['Image'] || '')}" crossorigin="anonymous" onerror="this.src='https://placehold.co/500x500?text=No+Image'">
+                        <div class="ig-tag-title" style="font-size: ${fontSize};">${esc(titleStr)}</div>
                         <div class="ig-tag-price">${formattedPrice}</div>
                     `;
                 }
             }
 
-            await new Promise(r => setTimeout(r, 400));
+            await Promise.all(Array.from(document.querySelectorAll('#igPostTemplate img')).map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.onload = resolve; img.onerror = resolve; setTimeout(resolve, 8000); })));
 
             const targetElement = document.getElementById("igPostTemplate");
-            const canvas = await html2canvas(targetElement, {
-                useCORS: true,
+            const canvas = await html2canvas(targetElement, { 
+                useCORS: true, 
                 scale: 1,
                 backgroundColor: "#ffffff"
             });
-
+            
             const link = document.createElement("a");
             const cleanBrand = brandName.replace(/[^a-zA-Z0-9]/g, "_");
             link.download = `${cleanBrand}_Part${pageNum}_IG.png`;
@@ -474,6 +323,7 @@ async function generateAllIGPosters() {
     }
     alert("🎉 所有品牌的 IG 宣傳圖已成功生成並下載！");
 }
+
 </script>
 
 </body>
