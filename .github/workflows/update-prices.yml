@@ -1,0 +1,33 @@
+name: Update Olive Young Prices
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每日定時執行一次 (UTC)
+  workflow_dispatch: # 允許你手動在 GitHub 網頁按一下就執行
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4
+
+      - name: Run price scraper script
+        run: python scraper.py  # 執行你的抓價程式（需配合對應的 Python 爬蟲腳本）
+
+      - name: Commit and push updated prices
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add oliveyoung_prices.json
+          git commit -m "Auto-update Olive Young prices" || exit 0
+          git push
