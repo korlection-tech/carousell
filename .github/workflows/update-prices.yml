@@ -2,7 +2,7 @@ name: Update Olive Young Prices
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每日定時自動執行
+    - cron: '0 0 * * *'  # 每日 UTC 00:00 自動執行
   workflow_dispatch:      # 支援手動觸發
 
 permissions:
@@ -22,11 +22,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4
+          pip install requests
 
       - name: Run price scraper script
-        env:
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}  # 👈 呢行好重要：將你頭先加嘅 Secret 傳入 Python
         run: python scraper.py
 
       - name: Commit and push updated prices
@@ -34,5 +32,5 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           git add oliveyoung_prices.json
-          git commit -m "Auto-update Olive Young prices via Apify" || exit 0
+          git commit -m "Auto-update Olive Young prices via API" || exit 0
           git push origin main || git push origin master
