@@ -1,11 +1,12 @@
 import csv
 import json
 import os
+import re
 import time
 import requests
 
-# Apify 上的 Olive Young 專用 Actor ID
-ACTOR_ID = "cocomoon~oliveyoung-scraper" # 或對應的 Actor Endpoint
+# Apify 上的 Olive Young 專用 Scraper
+ACTOR_ID = "cocomoon~oliveyoung-scraper"
 
 def scrape_via_apify():
     api_token = os.environ.get("APIFY_TOKEN")
@@ -49,7 +50,7 @@ def scrape_via_apify():
     dataset_id = run_data.get("defaultDatasetId")
     print(f"Apify run started. Run ID: {run_id}. Waiting for completion...")
 
-    # 3. 輪詢檢查 Apify 是否跑完（最多等待 3 分鐘）
+    # 3. 等待 Apify 完成抓取
     for _ in range(36):
         time.sleep(5)
         status_url = f"https://api.apify.com/v2/actor-runs/{run_id}?token={api_token}"
@@ -66,7 +67,7 @@ def scrape_via_apify():
         print("Apify run timed out.")
         return
 
-    # 4. 從 Apify Dataset 下載抓取回來的結果
+    # 4. 從 Apify 下載數據
     items_url = f"https://api.apify.com/v2/datasets/{dataset_id}/items?token={api_token}&format=json"
     items_res = requests.get(items_url)
     if items_res.status_code != 200:
@@ -75,22 +76,20 @@ def scrape_via_apify():
 
     scraped_items = items_res.json()
     
-    # 5. 整理並寫入 oliveyoung_prices.json 供前端網頁使用
+    # 5. 格式化寫入 JSON
     prices_data = {
         "updated_at": time.strftime("%Y-%m-%dT%H:%M:%S+09:00"),
         "products": {}
     }
 
     for item in scraped_items:
-        # 根據 Apify 回傳的結構提取 goodsNo 與價格
-        url = item.get("url", "") or item.get("productUrl", "")
-        import re
+        url = item.get("url", "") or item.get("productUrl", "") or item.get("pageUrl", "")
         match = re.search(r"goodsNo=([A-Z0-9]+)", url)
         if match:
             goods_no = match.group(1)
             
-            # 提取原價與折後價
-            sale_price = int(item.get("price", 0) or item.get("salePrice", 0) or 0)
+            # 提取價格
+            sale_price = int(item.get("price", 0) or item.get("salePrice", 0) or item.get("realPrice", 0) or 0)
             orig_price = int(item.get("originalPrice", 0) or item.get("orgPrice", 0) or sale_price)
             if orig_price == 0:
                 orig_price = sale_price
