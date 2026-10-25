@@ -1,27 +1,19 @@
 {
+  "updated_at": "2026-10-25T07:12:16+09:00",
   "products": {
     "A000000189248": {
       "kr_original_price_krw": 0,
       "kr_sale_price_krw": 0,
-      "extra_price_krw": null,
-      "promo_start": null,
-      "promo_end": null,
-      "extra_start": null,
-      "extra_end": null,
+      "kr_payment_price_krw": 0,
       "price_status": "ERROR",
-      "price_updated_at": "2026-10-25T04:29:15+09:00"
+      "price_updated_at": "2026-10-25T07:12:16+09:00"
     },
     "A000000213943": {
       "kr_original_price_krw": 0,
       "kr_sale_price_krw": 0,
-      "extra_price_krw": null,
-      "promo_start": null,
-      "promo_end": null,
-      "extra_start": null,
-      "extra_end": null,
+      "kr_payment_price_krw": 0,
       "price_status": "ERROR",
-      "price_updated_at": "2026-10-25T04:30:18+09:00"
+      "price_updated_at": "2026-10-25T07:12:17+09:00"
     }
-  },
-  "updated_at": "2026-10-25T04:28:12+09:00"
+  }
 }
