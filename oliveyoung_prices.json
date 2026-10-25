@@ -1,0 +1,18 @@
+{
+  "products": {
+    "A000000189248": {
+      "kr_original_price_krw": 33000,
+      "kr_sale_price_krw": 27000,
+      "discount_rate": 18,
+      "in_stock": true,
+      "price_status": "OK"
+    },
+    "A000000213943": {
+      "kr_original_price_krw": 33000,
+      "kr_sale_price_krw": 27000,
+      "discount_rate": 18,
+      "in_stock": true,
+      "price_status": "OK"
+    }
+  }
+}
